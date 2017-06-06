@@ -1,22 +1,23 @@
-#include <iostream>
 #include <gtest/gtest.h>
+#include "Soundex.h"
 
-class Soundex {
+using namespace testing;
+
+class SoundexEncoding : public Test {
 public:
-    std::string encode(const std::string& word) const {
-        return "A";
-    }
+    Soundex soundex;
 };
 
 TEST(SanityCheck, FrameworkWorks) {
     ASSERT_EQ(1, 1);
 }
 
-TEST(SoundexEncoding, RetainsSoleLetterOfOneLetterWord) {
-    Soundex soundex;
+TEST_F(SoundexEncoding, RetainsSoleLetterOfOneLetterWord) {
+    ASSERT_EQ(soundex.encode("A"), "A000");
+}
 
-    auto encoded = soundex.encode("A");
-    ASSERT_EQ(encoded, "A");
+TEST_F(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
+    ASSERT_EQ(soundex.encode("I"), "I000");
 }
 
 int main(int argc, char** argv) {
