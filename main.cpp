@@ -20,6 +20,14 @@ TEST_F(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
     ASSERT_EQ(soundex.encode("I"), "I000");
 }
 
+TEST_F(SoundexEncoding, ReplacesConsonantsWithAppropriateDigits) {
+    EXPECT_EQ(soundex.encode("Ax"), "A200");
+}
+
+TEST_F(SoundexEncoding, IgnoresNonAlphabetics) {
+    EXPECT_EQ(soundex.encode("A$"), "A000");
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
