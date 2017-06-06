@@ -5,7 +5,7 @@ project(tdd)
 
 #add_subdirectory(C:/Software/googletest/ ${CMAKE_BINARY_DIR}/googletest)
 
-#set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 14)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
