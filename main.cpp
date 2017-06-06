@@ -21,11 +21,15 @@ TEST_F(SoundexEncoding, PadsWithZerosToEnsureThreeDigits) {
 }
 
 TEST_F(SoundexEncoding, ReplacesConsonantsWithAppropriateDigits) {
-    EXPECT_EQ(soundex.encode("Ax"), "A200");
+    ASSERT_EQ(soundex.encode("Ax"), "A200");
 }
 
 TEST_F(SoundexEncoding, IgnoresNonAlphabetics) {
-    EXPECT_EQ(soundex.encode("A$"), "A000");
+    ASSERT_EQ(soundex.encode("A$"), "A000");
+}
+
+TEST_F(SoundexEncoding, ReplacesMultipleConsonantsWithDigits) {
+    ASSERT_EQ(soundex.encode("Armf"), "A651");
 }
 
 int main(int argc, char** argv) {
