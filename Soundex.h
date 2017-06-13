@@ -3,12 +3,15 @@
 
 #include <string>
 #include <unordered_map>
+#include <cctype>
+
+const std::string NotADigit{"*"};
 
 class Soundex
 {
 public:
     std::string encode(const std::string& word) const {
-        return zeroPad(head(word) + encodedDigits(tail(word)));
+		return zeroPad(upperFront(head(word)) + encodedDigits(tail(word)));
     }
 
 	std::string encodedDigit(char letter) const {
@@ -21,13 +24,25 @@ public:
 				{'m', "5"}, {'n', "5"},
 				{'r', "6"}
 		};
-		auto it = encodings.find(letter);
-		return it == encodings.end() ? "" : it->second;
+		auto it = encodings.find(lower(letter));
+		return it == encodings.end() ? NotADigit : it->second;
 	}
 
 private:
 
     static const size_t MaxCodeLength{4};
+
+	std::string encodedDigits(const std::string& word) const {
+		std::string encoding;
+		for (auto letter: word) {
+			if (isComplete(encoding)) break;
+
+			auto digit = encodedDigit(letter);
+			if (digit != NotADigit && digit != lastDigit(encoding))
+				encoding += digit;
+		}
+		return encoding;
+	}
 
     std::string head(const std::string& word) const {
         return word.substr(0, 1);
@@ -37,17 +52,13 @@ private:
         return word.substr(1);
     }
 
+	std::string upperFront(const std::string& string) const {
+		return std::string(1, std::toupper(static_cast<unsigned char>(string.front())));
+	}
 
-    std::string encodedDigits(const std::string& word) const {
-        std::string encoding;
-		for (auto letter: word)
-		{
-			if (isComplete(encoding)) break;
-			if (encodedDigit(letter) != lastDigit(encoding))
-				encoding += encodedDigit(letter);
-		}
-        return encoding;
-    }
+	char lower(char c) const {
+		return std::tolower(static_cast<unsigned char>(c));
+	}
 
 	bool isComplete(const std::string& encoding) const {
 		return encoding.length() == MaxCodeLength - 1;
@@ -59,7 +70,7 @@ private:
     }
 
 	std::string lastDigit(const std::string& encoding) const {
-		if (encoding.empty()) return "";
+		if (encoding.empty()) return NotADigit;
 		return std::string(1, encoding.back());
 	}
 };
