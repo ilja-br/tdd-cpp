@@ -35,7 +35,7 @@ endif()
 # Now simply link your own targets against gtest, gmock,
 # etc. as appropriate
 
-set(SOURCE_FILES main.cpp Soundex.h)
+set(SOURCE_FILES main.cpp Soundex.h StringUtil.cpp CharUtil.cpp)
 add_executable(tdd ${SOURCE_FILES})
 
 target_link_libraries(tdd gtest gmock_main)
