@@ -56,6 +56,10 @@ TEST_F(SoundexEncoding, IgnoresCaseWhenEncodingConsonants) {
 	ASSERT_EQ(soundex.encode("BCDL"), soundex.encode("Bcdl"));
 }
 
+TEST_F(SoundexEncoding, CombinesDuplicateCodesWhen2ndLetterDuplicates1st) {
+	ASSERT_EQ(soundex.encode("Bbcd"), "B230");
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
