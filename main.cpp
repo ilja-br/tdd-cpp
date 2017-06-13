@@ -32,6 +32,22 @@ TEST_F(SoundexEncoding, ReplacesMultipleConsonantsWithDigits) {
     ASSERT_EQ(soundex.encode("Armf"), "A651");
 }
 
+TEST_F(SoundexEncoding, LimitsLengthToFourCharacters) {
+	ASSERT_EQ(soundex.encode("Dcdlb").length(), 4u);
+}
+
+TEST_F(SoundexEncoding, IgnoresVowelLikeLetters) {
+	ASSERT_EQ(soundex.encode("Baeiouhycdl"), "B234");
+}
+
+TEST_F(SoundexEncoding, CombinesDuplicateEncodings) {
+	ASSERT_EQ(soundex.encodedDigit('b'), soundex.encodedDigit('p'));
+	ASSERT_EQ(soundex.encodedDigit('c'), soundex.encodedDigit('g'));
+	ASSERT_EQ(soundex.encodedDigit('d'), soundex.encodedDigit('t'));
+
+	ASSERT_EQ(soundex.encode("Abfcgdt"), "A123");
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
